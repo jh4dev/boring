@@ -10,7 +10,7 @@ import berich.model.RecentResultSet;
 public class Recommend {
 
 	private static final int _TOTAL_SIZE 	= 45;
-	private static final int _RESULT_SIZE	= 7;
+	private static final int _RESULT_SIZE	= 6;
 	
 	private static final int _BASE_WEIGHT	= 100;
 	
@@ -18,6 +18,14 @@ public class Recommend {
 	
 	public static void main(String[] args) {
 
+		for(int i = 0; i < 100; i++) {
+			drawLottery();
+		}
+		
+	}
+	
+	private static void drawLottery() {
+		
 		List<Integer> resultList = new ArrayList<Integer>();
 		
 		List<NumberSet> baseList = getBaseList();
@@ -41,16 +49,17 @@ public class Recommend {
 			NumberSet nSet =  baseList.get(getRandomNumber(_TOTAL_SIZE - 1));
 			
 			if(nSet.getWeight() >= getRandomNumber(_BASE_WEIGHT)) {
-				nSet.setWeight(101);
+				nSet.setWeight(0);
 				resultList.add(nSet.getNumber());
 				resultIdx++;
 			}
 			
 		}
 		
-		System.out.println(resultList);
+//		System.out.println(resultList);
+		System.out.println(sortNumber(resultList));
+		
 	}
-	
 	
 	/**
 	 * init
@@ -92,5 +101,32 @@ public class Recommend {
 		
 		Random rand = new Random();
 		return rand.nextInt(size);
+	}
+	
+	private static List<Integer> sortNumber(List<Integer> list ) {
+
+		int minNum = 0;
+		int minIdx = 0;
+		int tmpNumber = 0;
+
+		for(int i = 0; i < list.size() -1; i++) {
+			
+			minIdx = i;
+			minNum = list.get(i);
+			tmpNumber = list.get(i);
+			
+			for(int j = i+1; j < list.size(); j++) {
+				
+				if(list.get(j) < minNum) {
+					minNum = list.get(j);
+					minIdx = j;
+				}
+			}
+			list.set(i, minNum);
+			list.set(minIdx, tmpNumber);
+			
+		}
+		
+		return list;
 	}
 }
